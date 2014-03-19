@@ -14,8 +14,8 @@ def updateHand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
-    for i in word:
-        print True
-        hand[i] -= 1
-    return hand
+    newHand = hand.copy()
+    for l in word:
+        newHand[l] -= 1
+    return newHand
             
