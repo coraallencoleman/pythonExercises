@@ -24,25 +24,17 @@ def compChooseWord(hand, wordList, n):
     returns: string or None
     """
     # BEGIN PSEUDOCODE <-- Remove this comment when you code this function; do your coding within the pseudocode (leaving those comments in-place!)
-    # Create a new variable to store the maximum score seen so far (initially 0)
+    maxScore = 0 # Create a new variable to store the maximum score seen so far (initially 0)
 
-    # Create a new variable to store the best word seen so far (initially None)  
-
-    # For each word in the wordList
-
-        # If you can construct the word from your hand
-        # (hint: you can use isValidWord, or - since you don't really need to test if the word is in the wordList - you can make a similar function that omits that test)
-
-            # Find out how much making that word is worth
-
-            # If the score for that word is higher than your best score
-
-                # Update your best score, and best word accordingly
-
-
-    # return the best word you found.
-
-
+    bestWord = None # Create a new variable to store the best word seen so far (initially None)  
+    
+    for word in wordList: # For each word in the wordList
+        if isValidWord(word, hand, wordList) == True: # If you can construct the word from your hand
+            wordScore = getWordScore(word, n)  # Find out how much making that word is worth # (hint: you can use isValidWord, or - since you don't really need to test if the word is in the wordList - you can make a similar function that omits that test)
+            if wordScore > maxScore:    # If the score for that word is higher than your best score
+                bestWord = word
+                maxScore = getWordScore(bestWord, n) # Update your best score, and best word accordingly
+    return bestWord
 #
 # Problem #7: Computer plays a hand
 #
@@ -65,8 +57,27 @@ def compPlayHand(hand, wordList, n):
     wordList: list (string)
     n: integer (HAND_SIZE; i.e., hand size required for additional points)
     """
-    # TO DO ... <-- Remove this comment when you code this function
+    word = None
+    totalScore = 0     # Keep track of the total score
+    displayHandStr = ""
     
+    while calculateHandlen(hand) > 0:     # As long as there are still letters left in the hand:
+        displayHandStr = ""
+        for letter in hand.keys():
+            for j in range(hand[letter]):
+                displayHandStr += " " + letter 
+        print "Current Hand: " + str(displayHandStr)          # Display the hand
+        word = compChooseWord(hand, wordList, n)
+        if word == None:
+            print "Total score: " + str(totalScore) + " points."
+            break
+        else:
+            totalScore += getWordScore(word, n)
+            print repr(word) + " earned " + str(getWordScore(word, n)) + " points. Total: " + str(totalScore) + " points." # Tell the user how many points the word earned, and the updated total score, in one line followed by a blank line
+            print
+            hand = updateHand(hand, word)              # Update the hand
+    else:
+        print "Total score: " + str(totalScore) + " points."
 #
 # Problem #8: Playing a game
 #

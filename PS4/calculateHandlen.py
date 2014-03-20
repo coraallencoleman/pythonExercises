@@ -15,4 +15,4 @@ def calculateHandlen(hand):
     for letter in hand.keys():
         for j in range(hand[letter]):
              count += 1 
-    print count
+    return count
